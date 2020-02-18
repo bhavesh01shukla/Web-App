@@ -4,6 +4,9 @@ import "bootstrap/dist/css/bootstrap.min.css"
 
 import UsersList from './components/users-list.component'
 import CreateUser from './components/create-user.component'
+import Login from './components/login.component'
+import vendor_home from './components/vendor_home'
+
 
 
 function App() {
@@ -20,6 +23,9 @@ function App() {
               <li className="navbar-item">
                 <Link to="/create" className="nav-link">Register</Link>
               </li>
+              <li className="navbar-item">
+                <Link to="/login" className="nav-link">Login</Link>
+              </li>
             </ul>
           </div>
         </nav>
@@ -27,6 +33,8 @@ function App() {
         <br/>
         <Route path="/" exact component={UsersList}/>
         <Route path="/create" component={CreateUser}/>
+        <Route path="/login" exact component={Login}/>
+        <Route path= "/vendor_home" component = {vendor_home}/>
       </div>
     </Router>
   );
