@@ -20,6 +20,10 @@ let Product = new mongoose.Schema({
     price: {
         type: Number,
         required: true
+    },
+    status: {
+        type: String,
+        required: true
     }
 });
 

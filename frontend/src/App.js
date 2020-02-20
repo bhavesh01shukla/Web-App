@@ -6,6 +6,7 @@ import UsersList from './components/users-list.component'
 import CreateUser from './components/create-user.component'
 import Login from './components/login.component'
 import vendor_home from './components/vendor_home'
+import customer_home from './components/customer_home'
 
 
 
@@ -34,7 +35,8 @@ function App() {
         <Route path="/" exact component={UsersList}/>
         <Route path="/create" component={CreateUser}/>
         <Route path="/login" exact component={Login}/>
-        <Route path= "/vendor_home" component = {vendor_home}/>
+        <Route path= "/vendor_home/*" exact component = {vendor_home}/>
+        <Route path= "/customer_home" exact component = {customer_home}/>
       </div>
     </Router>
   );

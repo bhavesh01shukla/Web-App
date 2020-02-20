@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 
-export default class ProductsList extends Component {
+export default class Show_Product extends Component {
     
     constructor(props) {
         super(props);
@@ -42,20 +42,27 @@ export default class ProductsList extends Component {
                             <th>Total Quantity</th>
                             <th>Available Quantity</th>
                             <th>Price</th>
+                            <th>Status</th>
+                            <th>Id</th>
                         </tr>
                     </thead>
                     <tbody>
                     { 
                         this.state.products.map((currentProduct, i) => {
-                            return (
-                                <tr>
-                                    <td>{currentProduct.vendor_name}</td>
-                                    <td>{currentProduct.p_name}</td>
-                                    <td>{currentProduct.total_quantity}</td>
-                                    <td>{currentProduct.avail_quantity}</td>
-                                    <td>{currentProduct.price}</td>
-                                </tr>
-                            )
+                            if(currentProduct.avail_quantity>0)
+                            {
+                                return (
+                                    <tr>
+                                        <td>{currentProduct.vendor_name}</td>
+                                        <td>{currentProduct.p_name}</td>
+                                        <td>{currentProduct.total_quantity}</td>
+                                        <td>{currentProduct.avail_quantity}</td>
+                                        <td>{currentProduct.price}</td>
+                                        <td>{currentProduct.status}</td>
+                                        <td>{currentProduct._id}</td>
+                                    </tr>
+                                )
+                            }
                         })
                     }
                     </tbody>

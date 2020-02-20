@@ -33,21 +33,8 @@ userRoutes.route('/').get(function(req, res) {
         }
     });
 });
-// Getting all the products for a given user
-userRoutes.route('/show-products').post(function(req, res) {
-    console.log('printing req');
-    console.log(req.data);
-    let pro = new Product(req.body);
 
-    Product.find({vendor_name: req.body.vendor_name})
-        .then(pro => {
-            res.status(200).json({pro});
-        })
-        .catch(err => {
-            res.status(400).send('Error');
-        })
-       
-});
+
 // Adding a new user
 userRoutes.route('/add').post(function(req, res) {
     let user = new User(req.body);
@@ -59,6 +46,7 @@ userRoutes.route('/add').post(function(req, res) {
             res.status(200).json({'User': 'User added successfully'});
         })
         .catch(err => {
+            alert('try again');
             res.status(400).json('Error');
         });
 });
@@ -77,6 +65,8 @@ userRoutes.route('/add-product').post(function(req, res) {
             res.status(400).json('Error');
         });
 });
+
+
 // login a user
 userRoutes.route('/login').post(function(req, res) {
     let user = new User(req.body);
@@ -91,6 +81,55 @@ userRoutes.route('/login').post(function(req, res) {
             res.status(400).send('Error');
         })
 }); 
+
+// Getting all the products for a given user
+userRoutes.route('/show-products').post(function(req, res) {
+    console.log('printing req');
+    console.log(req.data);
+    let pro = new Product(req.body);
+
+    Product.find({vendor_name: req.body.vendor_name})
+        .then(pro => {
+            res.status(200).json({pro});
+        })
+        .catch(err => {
+            res.status(400).send('Error');
+        })
+       
+});
+
+// Getting all the ready-to-dispatch products for the current vendor
+userRoutes.route('/ready-to-dispatch').post(function(req, res) {
+    console.log('printing req');
+    console.log(req.data);
+    let pro = new Product(req.body);
+
+    Product.find({vendor_name: req.body.vendor_name, avail_quantity: 0})
+        .then(pro => {
+            res.status(200).json({pro});
+        })
+        .catch(err => {
+            res.status(400).send('Error');
+        })
+       
+});
+
+// Searching all the produts by given input product name
+userRoutes.route('/search-product').post(function(req, res) {
+    console.log('printing pro_name in server.js');
+    console.log(req.data);
+    let pro = new Product(req.body);
+
+    Product.find({p_name: req.body.p_name})
+        .then(pro => {
+            res.status(200).json({pro});
+        })
+        .catch(err => {
+            res.status(400).send('Error');
+        })
+       
+});
+
 // removing a user
 userRoutes.route('/remove').post(function(req, res) {
     let user = new User(req.body);
@@ -107,10 +146,16 @@ userRoutes.route('/remove').post(function(req, res) {
 });
 
 // Getting a user by id
-userRoutes.route('/:id').get(function(req, res) {
-    let id = req.params.id;
-    User.findById(id, function(err, user) {
-        res.json(user);
+userRoutes.route('/change-product-status').put(function(req, res) {
+    let id = req.body.id;
+    console.log(id)
+    console.log('check id')
+    Product.findByIdAndUpdate(id,req.body, function(err) {
+        if(err){
+            res.status(400).send("unable to update product")
+        }else{
+            res.status(400).send("update product")
+        }
     });
 });
 

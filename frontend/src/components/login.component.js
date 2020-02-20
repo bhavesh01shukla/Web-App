@@ -49,8 +49,9 @@ export default class Login extends Component {
                     console.log(res.data.user.type);
                     // window.location.href='/vendor_home';
                     if(res.data.user.type==='Vendor'){
+                        console.log(res.data.user)
                         localStorage.setItem("ven",JSON.stringify(res.data.user)) 
-                        window.location.href='/vendor_home';
+                        window.location.href='/vendor_home/';
                     }
                     else if (res.data.user.type==='Customer'){
                         localStorage.setItem("cus",JSON.stringify(res.data.user)) 

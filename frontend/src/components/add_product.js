@@ -5,16 +5,21 @@ export default class Add_product extends Component {
     
     constructor(props) {
         super(props);
+        var x=JSON.parse(localStorage.getItem("ven"))
+
+        console.log('check once')
+        console.log(x);
+        console.log(x.username);
 
         this.state = {
-            vendor_name: '',
+            vendor_name: x.username,
             p_name: '',
             total_quantity: '',
             avail_quantity: '',
-            price: ''
+            price: '',
+            status: 'available'
         }
-
-        this.onChangeVendor_name = this.onChangeVendor_name.bind(this);
+        // this.onChangeVendor_name = this.onChangeVendor_name.bind(this);
         this.onChangeP_name = this.onChangeP_name.bind(this);
         this.onChangeTotal_quantity = this.onChangeTotal_quantity.bind(this);
         this.onChangeAvail_quantity = this.onChangeAvail_quantity.bind(this);
@@ -22,9 +27,9 @@ export default class Add_product extends Component {
         this.onSubmit = this.onSubmit.bind(this);
     }
     
-    onChangeVendor_name(event) {
-        this.setState({ vendor_name: event.target.value });
-    }
+    // onChangeVendor_name(event) {
+    //     this.setState({ vendor_name: event.target.value });
+    // }
 
     onChangeP_name(event) {
         this.setState({ p_name: event.target.value });
@@ -40,15 +45,21 @@ export default class Add_product extends Component {
     onChangePrice(event) {
         this.setState({ price : event.target.value });
     }
+
     onSubmit(e) {
         e.preventDefault();
+
+        if(this.state.avail_quantity===0){
+            this.setState({ status : 'rt_dispatch' });
+        }
 
         const newProduct = {
             vendor_name: this.state.vendor_name,
             p_name: this.state.p_name,
             total_quantity: this.state.total_quantity,
             avail_quantity: this.state.avail_quantity,
-            price: this.state.price
+            price: this.state.price,
+            status: this.state.status
         }
         axios.post('http://localhost:4000/add-product', newProduct)
              .then(res => {
@@ -60,11 +71,12 @@ export default class Add_product extends Component {
             })
 
         this.setState({
-            vendor_name: '',
+            // vendor_name: '',
             p_name: '',
             total_quantity: '',
             avail_quantity: '',
-            price: ''
+            price: '',
+            status: ''
         });
     }
 
@@ -72,14 +84,14 @@ export default class Add_product extends Component {
         return (
             <div>
                 <form onSubmit={this.onSubmit}>
-                    <div className="form-group">
+                    {/* <div className="form-group">
                         <label>Vendor name: </label>
                         <input type="text" 
                                className="form-control" 
                                value={this.state.vendor_name}
                                onChange={this.onChangeVendor_name}
                                />
-                    </div>
+                    </div> */}
                     <div className="form-group">
                         <label>Product name: </label>
                         <input type="text"

@@ -1,84 +1,90 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-export default class vendor_home extends Component {
+export default class customer_home extends Component {
     
     constructor(props) {
         super(props);
 
         this.state = {
-            username: '',
-            password: '',
+            product_name: '',
+            products: []
         }
 
-        this.onChangeUsername = this.onChangeUsername.bind(this);
-        this.onChangePassword = this.onChangePassword.bind(this);
+        this.onChangeProduct_name = this.onChangeProduct_name.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
     }
     
-    onChangeUsername(event) {
-        this.setState({ username: event.target.value });
+    onChangeProduct_name(event) {
+        this.setState({ product_name: event.target.value });
     }
-
-    onChangePassword(event) {
-        this.setState({ password: event.target.value });
-    }
-
     onSubmit(e) {
         e.preventDefault();
 
-        const newUser = {
-            username: this.state.username,
-            password: this.state.password,
+        const newProduct = {
+            product_name: this.state.product_name,
         }
-        // console.log(newUser)
-        axios.post('http://localhost:4000/login', newUser)
-             .then(res => {
-                 console.log(res.data);
-                 if(res.data.username == null){
-                     alert("User not found");
-                 }
-                 else{
-                     window.location('/vendor_home');
-                 }
-                });
-
-        this.setState({
-            username: '',
-            password: '',
-        });
+        // console.log(newProduct)
+        axios.post('http://localhost:4000/search-product', newProduct)
+        .then(response => {
+            console.log('printing response');
+            console.log(response.data);
+            this.setState({products: response.data.pro});
+        })
+        .catch(function(error) {
+            console.log(error);
+        })
     }
 
     render() {
-        console.log("hello")
-
+        console.log("hahaahahahahahaah")
         return (
             <div>
-                 <p> welcome customer</p>
-                {/* <form onSubmit={this.onSubmit}>
+                <form onSubmit={this.onSubmit}>
                     <div className="form-group">
-                        <label>Username: </label>
+                        <label>Search Product </label>
                         <input type="text" 
                                className="form-control" 
-                               value={this.state.username}
-                               onChange={this.onChangeUsername}
+                               value={this.state.product_name}
+                               onChange={this.onChangeProduct_name}
                                />
                     </div>
                     <div className="form-group">
-                        <label>Password: </label>
-                        <input type="password" 
-                               className="form-control" 
-                               value={this.state.password}
-                               onChange={this.onChangePassword}
-                               />  
+                        <input type="submit" value="Search" className="btn btn-primary"/>
                     </div>
-        
-                    <div className="form-group">
-                        <input type="submit" value="Login" className="btn btn-primary"/>
-                    </div>
-                </form> */}
+                </form>
+                
+                <table className="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Vendor name</th>
+                            <th>Product Name</th>
+                            <th>Total Quantity</th>
+                            <th>Available Quantity</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    { 
+                        this.state.products.map((currentProduct, i) => {
+                            if(currentProduct.avail_quantity>0)
+                            {
+                                return (
+                                    <tr>
+                                        <td>{currentProduct.vendor_name}</td>
+                                        <td>{currentProduct.p_name}</td>
+                                        <td>{currentProduct.total_quantity}</td>
+                                        <td>{currentProduct.avail_quantity}</td>
+                                        <td>{currentProduct.price}</td>
+                                    </tr>
+                                )
+                            }
+                        })
+                    }
+                    </tbody>
+                </table>
             </div>
         )
     }
 }
-
