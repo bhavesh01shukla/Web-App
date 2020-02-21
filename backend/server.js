@@ -9,7 +9,7 @@ const userRoutes = express.Router();
 
 let User = require('./models/user');
 let Product = require('./models/product');
-
+let Order = require('./models/orders');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -85,7 +85,7 @@ userRoutes.route('/login').post(function(req, res) {
 // Getting all the products for a given user
 userRoutes.route('/show-products').post(function(req, res) {
     console.log('printing req');
-    console.log(req.data);
+    console.log(req.body);
     let pro = new Product(req.body);
 
     Product.find({vendor_name: req.body.vendor_name})
@@ -101,7 +101,7 @@ userRoutes.route('/show-products').post(function(req, res) {
 // Getting all the ready-to-dispatch products for the current vendor
 userRoutes.route('/ready-to-dispatch').post(function(req, res) {
     console.log('printing req');
-    console.log(req.data);
+    console.log(req.body);
     let pro = new Product(req.body);
 
     Product.find({vendor_name: req.body.vendor_name, avail_quantity: 0})
@@ -117,10 +117,26 @@ userRoutes.route('/ready-to-dispatch').post(function(req, res) {
 // Searching all the produts by given input product name
 userRoutes.route('/search-product').post(function(req, res) {
     console.log('printing pro_name in server.js');
-    console.log(req.data);
+    console.log(req.body);
     let pro = new Product(req.body);
 
     Product.find({p_name: req.body.p_name})
+        .then(pro => {
+            res.status(200).json({pro});
+        })
+        .catch(err => {
+            res.status(400).send('Error');
+        })
+       
+});
+
+// Checking the availability of the order placed
+userRoutes.route('/check-order').post(function(req, res) {
+    console.log('in check-order route in server.js');
+    console.log(req.body);
+    let pro = new Product(req.body);
+
+    Product.find({p_name: req.body.product_name,vendor_name: req.body.vendor_name})
         .then(pro => {
             res.status(200).json({pro});
         })

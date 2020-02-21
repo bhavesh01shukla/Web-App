@@ -49,10 +49,6 @@ export default class Add_product extends Component {
     onSubmit(e) {
         e.preventDefault();
 
-        if(this.state.avail_quantity===0){
-            this.setState({ status : 'rt_dispatch' });
-        }
-
         const newProduct = {
             vendor_name: this.state.vendor_name,
             p_name: this.state.p_name,
@@ -76,7 +72,6 @@ export default class Add_product extends Component {
             total_quantity: '',
             avail_quantity: '',
             price: '',
-            status: ''
         });
     }
 
